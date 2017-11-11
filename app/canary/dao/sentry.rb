@@ -50,7 +50,9 @@ module CodeValet::Canary::DAO
                               :expires_in => CACHE_SECONDS) do
                SentryApi.project_issues(project_key)
              end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS,
+            SentryApi::Error::Parsing,
+            SentryApi::Error::NotFound  => e
       @error = e
       return []
     rescue StandardError => e
