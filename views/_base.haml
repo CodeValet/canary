@@ -1,9 +1,5 @@
 :ruby
   @url_root = '/'
-  if ENV['RACK_ENV'] == 'production'
-    @url_root = '/canary/'
-  end
-
 !!! XML
 !!!
 %html
@@ -48,8 +44,8 @@
         .col-md-6
           %p
             &copy; 2017
-            %a{:href => 'https://github.com/rtyler'}
-              R. Tyler Croy.
+            %a{:href => 'https://github.com/cloudbees'}
+              CloudBees Labs
         .col-md-6
           %p.text-right
             %a{:href => 'https://twitter.com/codevalet'}
