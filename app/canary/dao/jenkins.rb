@@ -8,7 +8,7 @@ module CodeValet::Canary::DAO
   # but rather information about the state of the instance.
   class Jenkins
     # Base URL to contrict
-    URL_BASE = ENV['JENKINS_URL_BASE'] || 'https://codevalet.io'
+    URL_BASE = ENV['JENKINS_URL_BASE']
     CACHE_SECONDS = 300
 
     attr_reader :error
@@ -37,7 +37,11 @@ module CodeValet::Canary::DAO
     def rebuilt_for(user)
       # NOTE: worth investigating whether Jenkins will provide the appropriate
       # caching headers to
-      url = "#{URL_BASE}/u/#{user}/userContent/builtOn.txt"
+      url = "https://#{user}.codevalet.io/userContent/builtOn.txt"
+      if URL_BASE
+        url = "#{URL_BASE}/userContent/builtOn.txt"
+      end
+
       response = connection.get(url)
       return response.body if response.success?
 
