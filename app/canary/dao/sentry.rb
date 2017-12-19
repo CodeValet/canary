@@ -12,6 +12,13 @@ module CodeValet::Canary::DAO
   class Sentry
     attr_reader :error
 
+    # List of somewhat predictable errors from Sentry which shouldn't be
+    # re-raised as errors into Sentry by the Canary application
+    SENTRY_ERRORS = [
+      SentryApi::Error::Parsing,
+      SentryApi::Error::ResponseError,
+    ]
+
     CACHE_SECONDS = 60
 
     def errored?
@@ -31,7 +38,7 @@ module CodeValet::Canary::DAO
                               :expires_in => 10 * CACHE_SECONDS) do
                SentryApi.projects
              end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, *SENTRY_ERRORS => e
       @error = e
       return []
     rescue StandardError => e
@@ -50,9 +57,7 @@ module CodeValet::Canary::DAO
                               :expires_in => CACHE_SECONDS) do
                SentryApi.project_issues(project_key)
              end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS,
-            SentryApi::Error::Parsing,
-            SentryApi::Error::NotFound  => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, *SENTRY_ERRORS => e
       @error = e
       return []
     rescue StandardError => e
@@ -72,7 +77,7 @@ module CodeValet::Canary::DAO
                               :expires_in => 5 * CACHE_SECONDS) do
                SentryApi.issue(id)
              end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, *SENTRY_ERRORS => e
       @error = e
       return nil
     rescue StandardError => e
@@ -86,7 +91,7 @@ module CodeValet::Canary::DAO
                               :expires_in => CACHE_SECONDS) do
                SentryApi.issue_events(id)
              end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, *SENTRY_ERRORS => e
       @error = e
       return nil
     rescue StandardError => e
