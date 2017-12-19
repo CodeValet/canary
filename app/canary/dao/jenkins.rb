@@ -25,7 +25,7 @@ module CodeValet::Canary::DAO
 
     def rebuilt_ga
       return cache.get_or_set('rebuiltGA', :expires_in => CACHE_SECONDS) do
-        rebuilt_for('rtyler')
+        rebuilt_for('jruby')
       end
     end
 
