@@ -1,4 +1,5 @@
 require 'concurrent/hash'
+require 'faraday'
 require 'mini_cache'
 require 'net/http'
 require 'openssl'
@@ -13,6 +14,7 @@ module CodeValet
         Errno::EINVAL,
         Errno::ECONNRESET,
         EOFError,
+        Faraday::ConnectionFailed,
         Net::HTTPBadResponse,
         Net::HTTPHeaderSyntaxError,
         Net::ProtocolError,
