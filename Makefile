@@ -1,3 +1,4 @@
+IMAGE_NAME=codevalet/canary
 
 all: check container
 
@@ -19,10 +20,13 @@ run: depends
 	./scripts/ruby bundle exec puma
 
 check-container: container
-	docker run --rm rtyler/codevalet-canary:latest bundle exec puma --version
+	docker run --rm $(IMAGE_NAME):latest bundle exec puma --version
 
 container: depends Dockerfile
-	docker build -t rtyler/codevalet-canary .
+	docker build -t $(IMAGE_NAME) .
+
+deploy: container
+	docker push $(IMAGE_NAME):latest
 
 clean:
 	rm -rf vendor
