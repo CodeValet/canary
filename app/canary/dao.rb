@@ -15,6 +15,7 @@ module CodeValet
         Errno::ECONNRESET,
         EOFError,
         Faraday::ConnectionFailed,
+        Faraday::TimeoutError,
         Net::HTTPBadResponse,
         Net::HTTPHeaderSyntaxError,
         Net::ProtocolError,
