@@ -19,6 +19,9 @@ depends: Gemfile
 run: depends
 	./scripts/ruby bundle exec puma
 
+update: Gemfile
+	./scripts/ruby bundle update
+
 check-container: container
 	docker run --rm $(IMAGE_NAME):latest bundle exec puma --version
 
@@ -31,4 +34,4 @@ deploy: container
 clean:
 	rm -rf vendor
 
-.PHONY: all depends clean run check container spec check-container rubocop
+.PHONY: all depends clean run check container update spec check-container rubocop
